@@ -1,7 +1,7 @@
 import { Router } from 'express'
-import main from './main.js'
+import vectorizeData from './vectorizeData.js'
 const routerMaster = Router();
 
-routerMaster.use('/main', main)
+routerMaster.use('/vectorizeData', vectorizeData)
 
 export {routerMaster}
