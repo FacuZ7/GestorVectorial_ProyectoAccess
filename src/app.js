@@ -1,16 +1,67 @@
 import * as dotenv from "dotenv";
-// import { manageEmbeddings } from './handlers/embeddingsHandler.js';
-import { pineconeClient, indexName } from './config/pineconeConfig.js';
-import openaiEmbeddings from "./config/embeddingsConfig.js";
-import { PineconeStore } from "@langchain/pinecone";
 import { loadDocuments } from './utils/documentLoader.js';
 import { splitDocuments } from './utils/textSplitter.js';
+import createPineconeIndex from "./services/createPineconeIndex.js";
+import indexHasVectors from "./utils/indexHasVectors.js";
+import insertVectors from "./services/insertVectors.js";
 dotenv.config();
 
 
+const docs = await loadDocuments(process.env.KNOWLEDGE_PATH);
+const splittedDocuments = await splitDocuments(docs);
 
-console.log(process.env.PINECONE_INDEX_DIMENSION)
-console.log(typeof Number(process.env.PINECONE_INDEX_DIMENSION))
+const pineconeIndex = await createPineconeIndex();
+
+const hasVectors = await indexHasVectors(pineconeIndex)
+
+console.log("hay vectores?: ", hasVectors)
+
+if (!hasVectors){
+    console.log("No hay vectores en el index, los creo.")
+    await insertVectors(splittedDocuments, pineconeIndex)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /********************* PRUEBAS PINECONE **************************************/
 // const listIndexes = await pineconeClient.listIndexes() //=> listar todos mis indices
 // const index = pineconeClient.index(indexName) //=> busca el indice deseado.
