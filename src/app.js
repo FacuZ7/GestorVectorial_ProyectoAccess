@@ -1,12 +1,16 @@
 import * as dotenv from "dotenv";
 // import { manageEmbeddings } from './handlers/embeddingsHandler.js';
 import { pineconeClient, indexName } from './config/pineconeConfig.js';
-import openaiEmbeddings from "./config/openaiConfig.js";
+import openaiEmbeddings from "./config/embeddingsConfig.js";
 import { PineconeStore } from "@langchain/pinecone";
 import { loadDocuments } from './utils/documentLoader.js';
 import { splitDocuments } from './utils/textSplitter.js';
 dotenv.config();
 
+
+
+console.log(process.env.PINECONE_INDEX_DIMENSION)
+console.log(typeof Number(process.env.PINECONE_INDEX_DIMENSION))
 /********************* PRUEBAS PINECONE **************************************/
 // const listIndexes = await pineconeClient.listIndexes() //=> listar todos mis indices
 // const index = pineconeClient.index(indexName) //=> busca el indice deseado.
@@ -58,29 +62,34 @@ dotenv.config();
 // console.log(result)
 
 // todo junto y en orden
-const docs = await loadDocuments(process.env.KNOWLEDGE_PATH)
-const splittedDocuments = await splitDocuments(docs)
+// const docs = await loadDocuments(process.env.KNOWLEDGE_PATH)
+// const splittedDocuments = await splitDocuments(docs)
 
-await pineconeClient.createIndex({
-    name: indexName,
-    dimension: 1536,
-    metric: 'cosine',
-    spec: { 
-    serverless: { 
-        cloud: process.env.PINECONE_CLOUD, 
-        region: process.env.PINECONE_REGION 
-    }
-    },
-    suppressConflicts: true,
-    waitUntilReady: true
-})
+// await pineconeClient.createIndex({
+//     name: indexName,
+//     dimension: 1536,
+//     metric: 'cosine',
+//     spec: { 
+//     serverless: { 
+//         cloud: process.env.PINECONE_CLOUD, 
+//         region: process.env.PINECONE_REGION 
+//     }
+//     },
+//     suppressConflicts: true,
+//     waitUntilReady: true
+// })
 
-const pineconeIndex = pineconeClient.index(indexName)
+// const pineconeIndex = pineconeClient.index(indexName)
 
-const vectorStore = await PineconeStore.fromDocuments(splittedDocuments, openaiEmbeddings, {
-    pineconeIndex,
-    maxConcurrency: 5
-})
+// const data = await pineconeIndex.describeIndexStats();
+// console.log(data.totalRecordCount != 0)
+
+
+
+// const vectorStore = await PineconeStore.fromDocuments(splittedDocuments, openaiEmbeddings, {
+//     pineconeIndex,
+//     maxConcurrency: 5
+// })
 
 
 
