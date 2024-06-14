@@ -1,9 +1,6 @@
-import { pineconeClient } from '../config/pineconeConfig.js'
-dotenv.config();
-
-const indexHasVectors = async () => {
+const indexHasVectors = async (index) => {
     try {
-        const response = await pineconeClient.describeIndexStats();
+        const response = await index.describeIndexStats();
         return response.totalRecordCount > 0;
     } catch (error) {
         console.error('Error checking vectors:', error);
