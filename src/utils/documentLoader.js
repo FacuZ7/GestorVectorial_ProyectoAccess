@@ -12,8 +12,9 @@ export const loadDocuments = async (directory)=>{
           ".docx": (path) => new DocxLoader(path) // Para pares pregunta respuesta validados
         }
     );
-
-    return await loader.load();
+    
+    const documents = await loader.load();
+    return documents;
 }
 
 
