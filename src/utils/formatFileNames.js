@@ -8,13 +8,16 @@ const formatFileNames = async () => {
         const files = await fs.readdir(process.env.KNOWLEDGE_PATH);
 
         for (const file of files) {
-            const oldPath = path.join(process.env.KNOWLEDGE_PATH, file);
-            const newFileName = file.replace(/\s+/g, '_');
-            const normalizedFileName = removeAccents(newFileName);
-            const newPath = path.join(process.env.KNOWLEDGE_PATH, normalizedFileName);
+            if (file.includes(' ')){
+                const oldPath = path.join(process.env.KNOWLEDGE_PATH, file);
+                const newFileName = file.replace(/\s+/g, '_');
+                const normalizedFileName = removeAccents(newFileName);
+                const newPath = path.join(process.env.KNOWLEDGE_PATH, normalizedFileName);
 
-            await fs.rename(oldPath, newPath);
-            console.log(`Renombrado: ${file} -> ${normalizedFileName}`);
+                await fs.rename(oldPath, newPath);
+                console.log(`Renombrado: ${file} -> ${normalizedFileName}`);
+            }
+            
         }
     } catch (err) {
         console.error('Error:', err);

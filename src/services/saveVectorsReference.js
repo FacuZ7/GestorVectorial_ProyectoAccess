@@ -1,15 +1,10 @@
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid'
-const saveVectorsReference = async (data) => {
-    const MONGO_URL = `http://localhost:${process.env.MONGO_PORT}/create-vector/`
-    
-    const obj = {
-        vector_id: uuidv4(),
-        ...data
-    }
 
+const saveVectorsReference = async (data) => {
+    const MONGO_URL = `http://localhost:${process.env.MONGO_PORT}/vectors/`
+    
     try {
-        const response = await axios.post(MONGO_URL, obj);
+        const response = await axios.post(MONGO_URL, data);
         return response.data;
     } catch (error) {
         console.error('Error consuming microservice:', error);
