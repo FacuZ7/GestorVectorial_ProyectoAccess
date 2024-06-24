@@ -6,21 +6,17 @@ import indexHasVectors from "./utils/indexHasVectors.js";
 import insertVectors from "./services/insertVectors.js";
 import generateVectors from "./utils/generateVectors.js";
 import saveVectorsReference from "./services/saveVectorsReference.js";
-
+import formatFileNames from './utils/formatFileNames.js'
+import renameFile from "./utils/renameFile.js";
 dotenv.config();
 
 const pineconeIndex = await managePineconeIndex();
 const hasVectors = await indexHasVectors(pineconeIndex)
 
-/* 
-
-En vez de preguntar si hay vectores, debería traer todos los documentos que SI existen en mongo 
-y preguntar si el que quiero insertar no existe entre los devueltos, recien ahi le hago embedding y etc...
-
-*/ 
 if (!hasVectors){
     console.time()
     console.log("No hay vectores en el index, los creo.")
+    await formatFileNames();
     const docs = await loadDocuments(process.env.KNOWLEDGE_PATH);
     let array = [];
 
@@ -50,17 +46,18 @@ if (!hasVectors){
             
                 return acc;
             }, {});
-
+            
             try {
                 for (const key in formatted) {
                     if (formatted.hasOwnProperty(key)) {
                         const data = formatted[key];
                         const result = await saveVectorsReference(data);
                         console.log('result:', result);
+                        await renameFile(result._id, key)
                     }
                 }
             } catch (error) {
-                console.error('Error processing and saving vectors:', error);
+                console.error('Error al guardar en BD:', error);
             }    
         }
     }

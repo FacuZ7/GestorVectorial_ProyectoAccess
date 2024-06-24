@@ -3,6 +3,7 @@ import * as dotenv from "dotenv";
 import path from 'path'
 dotenv.config();
 
+/* Limpia los nombres de los archivos que tengan acento o espacios. */
 const formatFileNames = async () => {
     try {
         const files = await fs.readdir(process.env.KNOWLEDGE_PATH);
