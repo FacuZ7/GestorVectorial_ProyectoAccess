@@ -3,7 +3,7 @@ import openaiEmbeddings from '../config/embeddingsConfig.js';
 
 const insertVectors = async (splittedDocuments, pineconeIndex) => {
 
-    await PineconeStore.fromDocuments(splittedDocuments, openaiEmbeddings, {
+    return await PineconeStore.fromDocuments(splittedDocuments, openaiEmbeddings, {
         pineconeIndex,
         maxConcurrency: 5
     })

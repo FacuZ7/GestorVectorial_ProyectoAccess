@@ -17,7 +17,7 @@ const managePineconeIndex = async () => {
         suppressConflicts: true,
         waitUntilReady: true
     });
-
+    console.log("Se utiliza el index:",indexName)
     return pineconeClient.index(indexName);
 }
 
