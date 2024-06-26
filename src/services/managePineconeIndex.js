@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 import { pineconeClient, indexName } from '../config/pineconeConfig.js'
 
 dotenv.config();
-//si existe lo busca y sino existe lo crea.
+//si existe lo busca y sino lo crea.
 const managePineconeIndex = async () => {
     await pineconeClient.createIndex({
         name: indexName,

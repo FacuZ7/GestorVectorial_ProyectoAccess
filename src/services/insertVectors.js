@@ -1,11 +1,12 @@
-const insertVectors = async (pineconeIndex, vectorsWithIDs) => {
-    const validVectors = vectorsWithIDs.map(({ id, values, filename }) => ({ 
-        id, 
-        values,
-        metadata: { filename }
-    }));
-    console.log(validVectors);
-    return await pineconeIndex.upsert(validVectors);
+import { PineconeStore } from '@langchain/pinecone';
+import openaiEmbeddings from '../config/embeddingsConfig.js';
+
+const insertVectors = async (splittedDocuments, pineconeIndex) => {
+
+    await PineconeStore.fromDocuments(splittedDocuments, openaiEmbeddings, {
+        pineconeIndex,
+        maxConcurrency: 5
+    })
 }
 
 export default insertVectors;
